@@ -1,0 +1,198 @@
+<div class="ui-grid ui-grid-responsive" [hidden] = "updatedDisplay">
+
+  <div class="ui-grid-row">
+      <div class="ui-grid-col-12">
+        <p-message severity="success"  text="Shape Updated Successfully"></p-message>
+
+      </div>
+  </div>
+
+  </div>
+
+
+  <div class="ui-grid ui-grid-responsive" [hidden] = "deleteDisplay">
+
+
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <p-message severity="success" text="Shape Deleted Successfully"></p-message>
+
+        </div>
+    </div>
+
+    </div>
+
+
+<p-dialog header = "Shapes Factory" [contentStyle] = "{'max-height':'400px'}" [(modal)] = "modal" [(visible)]="display" [width]="450">
+  <p-tabView>
+    <p-tabPanel leftIcon="fa fa-circle"  header="Circle" [selected] = "true" [closable] = "true">
+      <div>
+          <h3 class="first">Enter the Radius of the Circle You wish to Add</h3>
+          <h3>Radius</h3>
+
+          <span class="ui-float-label">
+              <input id="float-input" type="text" #rad min="0" name="radius" required size="30" pInputText [(ngModel)]="radius">
+              <label for="float-input">Radius</label>
+          </span>
+          <div class= "margin-top-space">
+              <button type="text"  (click)="saveCircle()" [disabled]="!radius || rad.value <= 0" pButton icon="pi" label="Save"></button>
+          </div>
+      </div>
+
+    </p-tabPanel>
+    <p-tabPanel leftIcon="fa fa-caret-up" class="tri" header="Triangle">
+        <h3 class="first">Enter the Base and Height of the Triangle</h3>
+        <h3>Base</h3>
+        <span class="ui-float-label">
+            <input id="float-input" type="text" size="30" pInputText [(ngModel)]="base">
+            <label for="float-input">Base</label>
+        </span>
+        <h3>Height</h3>
+        <span class="ui-float-label">
+            <input id="float-input" type="text" size="30" pInputText [(ngModel)]="height">
+            <label for="float-input">Height</label>
+        </span>
+          <div class= "margin-top-space">
+              <button type="text" (click)="saveTriangle()" [disabled]="!base || !height || base <= 0 || height < 0" pButton icon="pi" label="Save"></button>
+          </div>
+    </p-tabPanel>
+
+    <p-tabPanel leftIcon="fa fa-square" header="Square">
+      <h3 class="first">Enter the Length of the Square</h3>
+      <h3>Length</h3>
+      <span class="ui-float-label">
+          <input id="float-input" type="text" size="30" pInputText [(ngModel)]="length">
+          <label for="float-input">Length</label>
+      </span>
+
+        <div class= "margin-top-space">
+            <button type="text" (click)="saveSquare()" [disabled]="!length ||length <= 0"  pButton icon="pi" label="Save"></button>
+        </div>
+  </p-tabPanel>
+
+    <p-tabPanel leftIcon="fa fa-rectangle-landscape" header="Rectangle">
+        <h3 class="first">Enter the Length and Breadth of the Rectangle</h3>
+        <h3>Length</h3>
+          <span class="ui-float-label">
+              <input id="float-input" type="text" size="30"  pInputText [(ngModel)]="rectLength">
+              <label for="float-input">Length</label>
+          </span>
+          <h3>Breadth</h3>
+          <span class="ui-float-label">
+              <input id="float-input" type="text" size="30" pInputText [(ngModel)]="width">
+              <label for="float-input">Breadth</label>
+          </span>
+          <div class= "margin-top-space">
+              <button type="text" (click)="saveRectangle()" [disabled]="!rectLength || !width || rectLength <= 0 || width < 0" pButton icon="pi" label="Save"></button>
+          </div>
+    </p-tabPanel>
+  </p-tabView>
+
+</p-dialog>
+
+<button type="text" (click)="showDialog()" pButton icon="pi fa fa-plus"></button>
+
+
+
+
+<p-carousel headerText="Shapes"  [value]="shapes">
+
+  <ng-template  let-shape pTemplate="item">
+      <div class="ui-grid ui-grid-responsive">
+
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-12">
+
+                    <img src="assets/images/{{shape.imageUrl}}" (click)="selectShape(shape)" width="100" height="100">
+
+              </div>
+          </div>
+      </div>
+  </ng-template>
+
+</p-carousel>
+
+
+<div class="flex-container">
+  <div class="boxa">
+      <canvas  width="700" id="myCanvas" height="700"></canvas>
+  </div>
+  <div *ngIf = "area && perimeter" class="boxb">
+    <h2>Details:</h2>
+    <div *ngIf = "radius">
+          <h3>Current Shape : Circle</h3>
+          <h3>Radius</h3>
+          <span class="ui-float-label">
+              <input id="float-input" type="text" size="30" pInputText [(ngModel)]="radius">
+              <label for="float-input">Radius</label>
+          </span>
+    </div>
+
+
+
+    <div *ngIf = "rectLength && width">
+        <h3>Current Shape : Rectangle</h3>
+      <h3>Length</h3>
+      <span class="ui-float-label">
+          <input id="float-input" type="text" size="30" pInputText [(ngModel)]="rectLength">
+          <label for="float-input">Length</label>
+      </span>
+
+      <h3>Breadth</h3>
+      <span class="ui-float-label">
+          <input id="float-input" type="text" size="30" pInputText [(ngModel)]="width">
+          <label for="float-input">Breadth</label>
+      </span>
+    </div>
+
+    <div *ngIf = "length">
+      <h3>Current Shape : Square</h3>
+      <h2>Length</h2>
+      <span class="ui-float-label">
+          <input id="float-input" type="text" size="30" pInputText [(ngModel)]="length">
+          <label for="float-input">Length</label>
+      </span>
+    </div>
+
+      <div *ngIf = "base && height">
+      <h3>Current Shape : Triangle</h3>
+      <h3>Base</h3>
+      <span class="ui-float-label">
+          <input id="float-input" type="text" size="30" pInputText [(ngModel)]="base">
+          <label for="float-input">Base</label>
+      </span>
+
+      <h3>Height</h3>
+      <span class="ui-float-label">
+          <input id="float-input" type="text" size="30" pInputText [(ngModel)]="height">
+          <label for="float-input">Height</label>
+      </span>
+    </div>
+
+
+
+
+    <div>
+      <pre>{{msg}}</pre>
+
+      <button type="text" (click) = "edit()" pButton icon="pi fa fa-save" class="ui-button-success margin-right-space" label="Save"></button>
+      <button type="text" (click) = "delete()"  class="ui-button-danger" pButton icon="pi fa fa-trash" label="Delete"></button>
+
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

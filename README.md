@@ -1,4 +1,6 @@
-# TestApp
+# ShapesFactory App
+
+This project is an angular client that helps users perform basic CRUD operations such as adding shapes, updating shapes, viewing existing shapes from the shapes array in a carousel. 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
 
